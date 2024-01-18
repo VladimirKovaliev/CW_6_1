@@ -58,7 +58,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
 
         if form.is_valid():
             customers = form.cleaned_data['customers']
-            new_mailing = form.save()
+            new_mailing = form.save(commit=False)
             if new_mailing.start_time > current_time:
                 new_mailing.next_attempt = new_mailing.start_time
             else:
@@ -199,11 +199,11 @@ class MailingSettingsUpdateView(LoginRequiredMixin, UpdateView):
         error_message = ''
         if form.has_changed():
             if self.request.user.is_staff:
-                updated_settings = form.save()
+                updated_settings = form.save(commit=False)
                 updated_settings.save()
             else:
                 customers = form.cleaned_data['customers']
-                updated_settings = form.save()
+                updated_settings = form.save(commit=False)
 
                 if updated_settings.interval == 'every_minute':
                     updated_settings.next_attempt = current_time + timedelta(minutes=1)
@@ -260,7 +260,7 @@ class MessageCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     success_url = reverse_lazy('mailings:list')
 
     def form_valid(self, form):
-        obj: Message = form.save()
+        obj: Message = form.save(commit=False)
         obj.owner = self.request.user
         obj.save()
         return super().form_valid(form)

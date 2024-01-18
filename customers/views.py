@@ -33,7 +33,7 @@ class CustomerCreateView(LoginRequiredMixin, CreateView):
         """Метод получения данных из формы"""
         if form.is_valid():
             user = self.request.user
-            new_customer = form.save()
+            new_customer = form.save(commit=False)
             new_customer.owner.add(user)
             new_customer.save()
             return super().form_valid(form)

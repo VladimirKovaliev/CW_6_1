@@ -38,7 +38,7 @@ class RegisterView(CreateView):
     def form_valid(self, form):
         """Метод получения данных формы"""
         generated_code = generate_code.code_generator(6)
-        user = form.save()
+        user = form.save(commit=False)
         user.is_active = False
         user.verification_code = generated_code
 

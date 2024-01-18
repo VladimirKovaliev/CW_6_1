@@ -14,9 +14,8 @@ class TitleViewMixin:
 
     def get_context_data(self, **kwargs):
         """Метод получения контекста"""
-        context = super().get_context_data(**kwargs)
-        context["title"] = self.get_title()
-        return context
+        extra_context = {'title'}
+        return extra_context
 
 
 class BlogListView(ListView):
